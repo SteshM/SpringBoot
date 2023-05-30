@@ -36,6 +36,11 @@ public class StudentService {
     }
 
     public List<StudentEntity> getStudents() {
+
         return studentRepository.findAll();
+    }
+
+    public List<StudentEntity> findAll() {
+        return  studentRepository.findAll();
     }
 }
