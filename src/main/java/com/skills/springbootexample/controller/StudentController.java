@@ -19,19 +19,39 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @PostMapping("/student")
-    public StudentEntity createStudent(@RequestBody Student student) {
-        return studentService.createStudent(student);
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
     }
 
-     //availabble students
+    @PostMapping("/student")
+    public ResponseEntity<?> createStudent(@RequestBody Student student) {
+        StudentEntity studentEntity = studentService.createStudent(student);
+        return new ResponseEntity<>(studentEntity, HttpStatus.CREATED);
+    }
+
+
+     //available students
     @GetMapping("/students")
     public ResponseEntity<?> availableStudets(){
-        Map<String , Object> studentData = new HashMap<>();
-        List<StudentEntity> allData = studentService.findAll();
-        studentData.put("data" , allData );
-        return  new ResponseEntity<>(studentData, HttpStatus.ACCEPTED);
+        List<StudentEntity> allData = studentService.getStudents();
+        return  new ResponseEntity<>(allData, HttpStatus.OK);
     }
+
+    //get one student
+    @GetMapping("/student/{id}")
+    public ResponseEntity<?> getStudent(@PathVariable Long id){
+        StudentEntity singleStudent = studentService.getStudent(id);
+        return new ResponseEntity<>(singleStudent , HttpStatus.OK);
+    }
+
+    //update a record
+    @PutMapping("/student/{id}")
+    public ResponseEntity<?> replaceStudent(@PathVariable Long id,@RequestBody Student student){
+        StudentEntity singleStudent = studentService.updateStudent(id , student);
+
+        return new ResponseEntity<>(singleStudent, HttpStatus.OK);
+    }
+
 
 }
 

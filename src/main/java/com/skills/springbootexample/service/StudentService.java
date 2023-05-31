@@ -29,18 +29,42 @@ public class StudentService {
         return studentRepository.save(studentEntity);
     }
 
-    public int calculateAge(LocalDate dob){
+    public int calculateAge(LocalDate dob) {
         LocalDate now = LocalDate.now();
-        Period age = Period.between(dob,now);
+        Period age = Period.between(dob, now);
         return age.getYears();
     }
 
     public List<StudentEntity> getStudents() {
-
         return studentRepository.findAll();
     }
 
-    public List<StudentEntity> findAll() {
-        return  studentRepository.findAll();
+    public StudentEntity getStudent(Long id) {
+        return studentRepository.getStudentById(id);
     }
+
+//    public StudentEntity replaceStudent(Long id) {
+//        return studentRepository.replaceStudentById(id);
+//    }
+
+    public StudentEntity findStudentById(Long id) {
+        StudentEntity studentEntity = studentRepository.findStudentById(id);
+        System.out.println("data" + studentEntity);
+        return null;
+    }
+
+    //public List<StudentEntity> getStudent() { return studentRepository.findById();
+    public StudentEntity updateStudent(Long id, Student student) {
+        StudentEntity studentEntity = studentRepository.findStudentById(id);
+        studentEntity.setName(student.getName());
+        studentEntity.setEmail(student.getEmail());
+        studentEntity.setDob(student.getDob());
+
+        int age = calculateAge(student.getDob());
+        studentEntity.setAge(age);
+
+        return studentRepository.save(studentEntity);
+    }
+
 }
+
