@@ -2,7 +2,9 @@ package com.skills.springbootexample.controller;
 
 
 import com.skills.springbootexample.DTO.Student;
+
 import com.skills.springbootexample.entities.StudentEntity;
+import com.skills.springbootexample.repositories.StudentRepository;
 import com.skills.springbootexample.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,20 +15,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @RestController
 @RequestMapping(path = "api/v1")
 public class StudentController {
     @Autowired
-    private StudentService studentService;
-
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
+    public StudentService studentService;
+    @Autowired
+    public StudentRepository studentRepository;
 
     @PostMapping("/student")
-    public ResponseEntity<?> createStudent(@RequestBody Student student) {
-        StudentEntity studentEntity = studentService.createStudent(student);
-        return new ResponseEntity<>(studentEntity, HttpStatus.CREATED);
+    public ResponseEntity<?> createStudent(@RequestBody StudentEntity studentEntity) {
+        Map<String, Object> newRecord =  new HashMap<>();
+        StudentEntity record= studentService.createStudent(studentEntity);
+        newRecord.put("data" , record);
+
+        return new ResponseEntity<>(newRecord, HttpStatus.CREATED);
     }
 
 
@@ -52,7 +56,10 @@ public class StudentController {
         return new ResponseEntity<>(singleStudent, HttpStatus.OK);
     }
 
-
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable long id){
+        studentService.deleteById(id);
+    }
 }
 
 

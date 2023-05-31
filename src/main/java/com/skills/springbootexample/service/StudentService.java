@@ -15,19 +15,7 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
-    public StudentEntity createStudent(Student student) {
 
-        StudentEntity studentEntity = new StudentEntity();
-
-        studentEntity.setName(student.getName());
-        studentEntity.setEmail(student.getEmail());
-        studentEntity.setDob(student.getDob());
-
-        int age = calculateAge(student.getDob());
-        studentEntity.setAge(age);
-
-        return studentRepository.save(studentEntity);
-    }
 
     public int calculateAge(LocalDate dob) {
         LocalDate now = LocalDate.now();
@@ -43,19 +31,13 @@ public class StudentService {
         return studentRepository.getStudentById(id);
     }
 
-//    public StudentEntity replaceStudent(Long id) {
-//        return studentRepository.replaceStudentById(id);
-//    }
 
     public StudentEntity findStudentById(Long id) {
         StudentEntity studentEntity = studentRepository.findStudentById(id);
         System.out.println("data" + studentEntity);
         return null;
     }
-
-    //public List<StudentEntity> getStudent() { return studentRepository.findById();
-    public StudentEntity updateStudent(Long id, Student student) {
-        StudentEntity studentEntity = studentRepository.findStudentById(id);
+    public StudentEntity updateStudent(Long id, Student student) {StudentEntity studentEntity = studentRepository.findStudentById(id);
         studentEntity.setName(student.getName());
         studentEntity.setEmail(student.getEmail());
         studentEntity.setDob(student.getDob());
@@ -64,6 +46,14 @@ public class StudentService {
         studentEntity.setAge(age);
 
         return studentRepository.save(studentEntity);
+    }
+
+
+    public StudentEntity createStudent(StudentEntity studentEntity) {
+        return  studentRepository.save(studentEntity);
+    }
+    public void deleteById(long id) {
+        studentRepository.deleteById(id);
     }
 
 }
