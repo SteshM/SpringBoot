@@ -37,7 +37,8 @@ public class StudentService {
         System.out.println("data" + studentEntity);
         return null;
     }
-    public StudentEntity updateStudent(Long id, Student student) {StudentEntity studentEntity = studentRepository.findStudentById(id);
+    public StudentEntity updateStudent(Long id, Student student) {
+        StudentEntity studentEntity = studentRepository.findStudentById(id);
         studentEntity.setName(student.getName());
         studentEntity.setEmail(student.getEmail());
         studentEntity.setDob(student.getDob());
@@ -49,8 +50,17 @@ public class StudentService {
     }
 
 
-    public StudentEntity createStudent(StudentEntity studentEntity) {
+    public StudentEntity createStudent(Student student) {
+        StudentEntity studentEntity = new StudentEntity();
+        studentEntity.setName(student.getName());
+        studentEntity.setEmail(student.getEmail());
+        studentEntity.setDob(student.getDob());
+
+        int age = calculateAge(student.getDob());
+        studentEntity.setAge(age);
+
         return  studentRepository.save(studentEntity);
+
     }
     public void deleteById(long id) {
         studentRepository.deleteById(id);

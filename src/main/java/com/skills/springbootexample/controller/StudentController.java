@@ -25,18 +25,17 @@ public class StudentController {
     public StudentRepository studentRepository;
 
     @PostMapping("/student")
-    public ResponseEntity<?> createStudent(@RequestBody StudentEntity studentEntity) {
-        Map<String, Object> newRecord =  new HashMap<>();
-        StudentEntity record= studentService.createStudent(studentEntity);
-        newRecord.put("data" , record);
+    public ResponseEntity<?> createStudent(@RequestBody Student student) {
 
-        return new ResponseEntity<>(newRecord, HttpStatus.CREATED);
+        StudentEntity record= studentService.createStudent(student);
+
+        return new ResponseEntity<>(record, HttpStatus.CREATED);
     }
 
 
      //available students
     @GetMapping("/students")
-    public ResponseEntity<?> availableStudets(){
+    public ResponseEntity<?> availableStudents(){
         List<StudentEntity> allData = studentService.getStudents();
         return  new ResponseEntity<>(allData, HttpStatus.OK);
     }
